@@ -33,11 +33,15 @@ H = {
   createSelect: function(list) {
     var _this = this;
     var select = $('<select />');
+      select.append( $('<option></option>').val(-1).html('-') );
     $.each(list, function(idx, item) {
       select.append( $('<option></option>').val(item.id).html(item.title) );
     });
     select.change(function(e){
       var idx = _this.selectsList.indexOf(select);
+      for (var i = _this.selectsList.length-1; i > idx; i-- ) {
+        _this.selectsList[i].remove();
+      }
       var parentId = select.val();
       var childrenItems = _this.getChildren(parentId);
       if (childrenItems.length) {
