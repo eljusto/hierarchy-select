@@ -10,9 +10,17 @@
     <input type="text" name="hierarchy-item" id="hierarchy-item" value="" />
     <div id="hierarchy-select"></div>
     <script type="text/javascript">
-      $(document).ready( function() {
-        H.create($('#hierarchy-select'), hierarchy);
-      });
+    $(document).ready( function() {
+      var hOptions = {
+        'hierarchy': hierarchy, 
+        'values': ["100", 10, 1],
+        'onChange': function(selectValues){
+          console.log(selectValues);
+          $('#hierarchy-item').val(selectValues.join('; '));
+        }
+      };
+      var h = H.create($('#hierarchy-select'), hOptions);
+    });
    </script>
   </body>
 </html>

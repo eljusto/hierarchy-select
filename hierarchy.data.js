@@ -24,7 +24,7 @@ var hierarchy = [
   subitems: [
     { id: 23,
       name: 'Necklaces/Pendants',
-      classes: [
+      subitems: [
         { id: 4, name: 'FW' },
         { id: 5, name: 'Tahitlan' },
       ]
