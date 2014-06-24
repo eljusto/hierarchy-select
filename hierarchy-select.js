@@ -4,6 +4,7 @@ var _h = {
 
     data: [],
     selectsList: [],
+    selectBlocksList: [],
     levels: [],
     onChange: function(){},
 
@@ -40,29 +41,38 @@ var _h = {
       });
       select.change(function(){
         var idx = _h.selectsList.indexOf(select);
-        for (var i = _this.selectsList.length-1; i > idx; i-- ) {
+        for (var i = _this.selectBlocksList.length-1; i > idx; i-- ) {
           _this.selectsList[i].remove();
           _this.selectsList.splice(i, 1);
+          _this.selectBlocksList[i].remove();
+          _this.selectBlocksList.splice(i, 1);
         }
         var parentId = select.val();
         var childrenItems = _this.getChildren(parentId, levelId);
         if (childrenItems.length) {
-          var childSelect = _this.createSelect(el, childrenItems, idx + 1);
-          _this.selectsList.push(childSelect);
-          el.append(childSelect);
+          var childSelectBlock = _this.createSelect(el, childrenItems, idx + 1);
+          el.append(childSelectBlock);
         }
         var selectValues = [];
         for (var i = 0, l = _this.selectsList.length; i < l; i ++) {
           var v = $(_this.selectsList[i]).val();
+          var s = (_this.selectsList[i])[0];
+          var valueName = s.options[s.selectedIndex].innerHTML;
           selectValues.push({ 
             categoryId: _this.levels[i].id, 
             categoryName:_this.levels[i].name, 
-            value: v 
+            value: v,
+            valueName: valueName
           });
         }
         _this.onChange(selectValues);
       });
-      return select;
+      var selectBlock = $(this.selectWrapper);
+      selectBlock.addClass(this.wrapperClass);
+      selectBlock.append(select);
+      this.selectsList.push(select);
+      this.selectBlocksList.push(selectBlock);
+      return selectBlock;
     },
 };
 
@@ -70,6 +80,8 @@ var _h = {
     var settings = $.extend({
     'onChange' : function(){}, 
     'values': [0],
+    'selectWrapper': '<div>',
+    'wrapperClass' : 'hs-wrapper'
     }, options);
 
       var hierarchy = settings.hierarchy[0];
@@ -79,14 +91,15 @@ var _h = {
       _h.data = _h.flattenList([], list, 0);
       _h.onChange = settings.onChange;
       _h.levels = hierarchy.levels;
+      _h.selectWrapper = settings.selectWrapper;
+      _h.wrapperClass = settings.wrapperClass;
 
       var parentId = 0;
       for (var i = 0, l = values.length; i < l; i ++) {
-        var select = _h.createSelect(this, _h.getChildren(parentId), i);
+        var selectBlock = _h.createSelect(this, _h.getChildren(parentId), i);
         parentId = values[i];
-        select.val(values[i]);
-        _h.selectsList.push(select);
-        this.append(select);
+        selectBlock.find('select').val(values[i]);
+        this.append(selectBlock);
       }
       return this;
     };
