@@ -13,13 +13,16 @@
     $(document).ready( function() {
       var hOptions = {
         'hierarchy': hierarchy, 
-        'values': ["100", 10, 1],
         'onChange': function(selectValues){
           console.log(selectValues);
-          $('#hierarchy-item').val(selectValues.join('; '));
+          var res = [];
+          selectValues.forEach(function(item){
+          res.push(item.categoryName + ':' + item.value);
+          });
+          $('#hierarchy-item').val(res.join('; '));
         }
       };
-      var h = H.create($('#hierarchy-select'), hOptions);
+      $('#hierarchy-select').hierarchySelect(hOptions);
     });
    </script>
   </body>
