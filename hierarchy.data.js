@@ -1,4 +1,4 @@
-var hierarchy = [{
+var hierarchy = {
   levels: [
     {id: 'dept', name: 'Dept'},
     {id: 'subdept', name: 'SubDept'},
@@ -47,5 +47,4 @@ var hierarchy = [{
     ]
   }
   ]
-}
-];
+};
